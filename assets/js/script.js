@@ -37,15 +37,31 @@ const SUPABASE_URL = 'https://pfxgyuamkddxceprcmpe.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBmeGd5dWFta2RkeGNlcHJjbXBlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5MjU5MTMsImV4cCI6MjA2OTUwMTkxM30.Iu6S7y7p-N7be90kGcxQ1zTKhxbaTqUrEW5PTAiFta0';
 
 let supabase = null;
-try {
-    if (window.supabase) {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    } else {
-        console.error("Supabase client library not loaded.");
+
+// Function to initialize or reinitialize Supabase client
+function initializeSupabase() {
+    try {
+        if (window.supabase) {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+                auth: {
+                    persistSession: false, // Don't persist sessions for public access
+                    autoRefreshToken: false // Don't auto-refresh tokens
+                }
+            });
+            console.log('Supabase client initialized successfully');
+            return true;
+        } else {
+            console.error("Supabase client library not loaded.");
+            return false;
+        }
+    } catch (e) {
+        console.error("Supabase initialization failed:", e);
+        return false;
     }
-} catch (e) {
-    console.error("Supabase initialization failed:", e);
 }
+
+// Initialize Supabase
+initializeSupabase();
 
 // 2. Helper Functions
 // ----------------------------------------
@@ -405,10 +421,21 @@ async function loadAdminCourses() {
         data.forEach(course => {
             const courseCard = document.createElement('div');
             courseCard.className = 'admin-course-card';
+            
+            // Truncate description to 100 characters for consistency
+            const shortDescription = course.description && course.description.length > 100 
+                ? course.description.substring(0, 100) + '...' 
+                : course.description || 'No description available';
+            
             courseCard.innerHTML = `
                 <div class="course-info">
                     <h4>${course.title}</h4>
-                    <p>${course.description}</p>
+                    <div class="course-meta-admin">
+                        ${course.category ? `<span class="admin-category">${course.category}</span>` : ''}
+                        ${course.price ? `<span class="admin-price">₦${parseFloat(course.price).toLocaleString()}</span>` : ''}
+                        ${course.duration ? `<span class="admin-duration">${course.duration}</span>` : ''}
+                    </div>
+                    <p class="admin-description">${shortDescription}</p>
                     ${course.youtube_video_id ? `<a href="https://www.youtube.com/watch?v=${course.youtube_video_id}" target="_blank" class="youtube-link">View on YouTube</a>` : ''}
                 </div>
                 <div class="course-actions">
@@ -469,6 +496,9 @@ async function handleAddCourse(event) {
         const courseData = {
             title: form.title.value,
             description: form.description.value,
+            category: form.category.value,
+            price: parseFloat(form.price.value),
+            duration: form.duration.value,
             youtube_video_id: videoId
         };
         
@@ -683,38 +713,153 @@ function initializeHeroSlider() {
 }
 
 async function fetchAndDisplayCourses(container) {
-    if (!supabase) return container.innerHTML = '<p>Supabase is not configured.</p>';
-    try {
-        const { data, error } = await supabase.from('courses').select('title, description, category');
-        if (error) throw error;
-        if (!data || data.length === 0) return container.innerHTML = '<p>No courses available yet.</p>';
-        container.innerHTML = '';
-        data.forEach(course => {
-            const courseCard = document.createElement('div');
-            courseCard.className = 'course-card';
-            courseCard.innerHTML = `<h4>${course.title}</h4><p>${course.description}</p>${course.category ? `<span class="category">${course.category}</span>` : ''}`;
-            container.appendChild(courseCard);
-        });
-    } catch (error) {
-        container.innerHTML = '<p>Failed to load courses.</p>';
+    if (!supabase) {
+        console.log('Supabase not initialized, attempting to initialize...');
+        if (!initializeSupabase()) {
+            container.innerHTML = '<p>Unable to connect to database. Please refresh the page.</p>';
+            return;
+        }
     }
+    
+    // Show loading state
+    container.innerHTML = '<p>Loading courses...</p>';
+    
+    try {
+        console.log('Fetching all courses from Supabase...');
+        
+        const { data, error } = await supabase
+            .from('courses')
+            .select('*')
+            .order('created_at', { ascending: false });
+        
+        if (error) {
+            console.error('Supabase error details:', error);
+            
+            // Handle JWT expired by reinitializing client and retrying once
+            if (error.code === 'PGRST301' || error.message === 'JWT expired') {
+                console.log('JWT expired, reinitializing Supabase client...');
+                if (initializeSupabase()) {
+                    console.log('Retrying request with new client...');
+                    const { data: retryData, error: retryError } = await supabase.from('courses').select('*');
+                    
+                    if (retryError) {
+                        console.error('Retry failed:', retryError);
+                        container.innerHTML = '<p>Authentication issue persists. Please refresh the page.</p>';
+                        return;
+                    }
+                    
+                    if (retryData) {
+                        displayCourses(container, retryData);
+                        return;
+                    }
+                }
+            }
+            
+            // Handle other specific errors
+            if (error.code === '42P01') {
+                container.innerHTML = '<p>Courses table not found. Please contact support.</p>';
+                return;
+            }
+            
+            throw error;
+        }
+        
+        console.log('Courses data received successfully:', data?.length || 0, 'courses');
+        displayCourses(container, data);
+        
+    } catch (error) {
+        console.error('Error fetching courses:', error);
+        container.innerHTML = `<p>Failed to load courses. Please refresh the page.</p>`;
+    }
+}
+
+// Helper function to display courses
+function displayCourses(container, data) {
+    if (!data || data.length === 0) {
+        container.innerHTML = '<p>No courses available yet.</p>';
+        return;
+    }
+    
+    container.innerHTML = '';
+    data.forEach(course => {
+        const courseCard = document.createElement('div');
+        courseCard.className = 'course-card';
+        
+        // Truncate description to 100 characters
+        const shortDescription = course.description && course.description.length > 100 
+            ? course.description.substring(0, 100) + '...' 
+            : course.description || 'No description available';
+        
+        courseCard.innerHTML = `
+            <div class="course-header">
+                <h4>${course.title || 'Untitled Course'}</h4>
+                ${course.category ? `<span class="course-category">${course.category}</span>` : ''}
+            </div>
+            <p class="course-description">${shortDescription}</p>
+            <div class="course-details">
+                ${course.price ? `<span class="course-price">₦${parseFloat(course.price).toLocaleString()}</span>` : ''}
+                ${course.duration ? `<span class="course-duration">${course.duration}</span>` : ''}
+            </div>
+            <div class="course-actions">
+                <button class="btn-read-more" onclick="viewCourseDetails(${course.id})">Read More</button>
+                <button class="btn-enrol" onclick="enrolInCourse(${course.id})">Enrol Now</button>
+            </div>
+        `;
+        container.appendChild(courseCard);
+    });
 }
 
 async function fetchAndDisplayVideoCourses(container) {
     if (!supabase) return container.innerHTML = '<p>Supabase is not configured.</p>';
+    
+    // Show loading state
+    container.innerHTML = '<p>Loading courses...</p>';
+    
     try {
-        const { data, error } = await supabase.from('courses').select('title, description, youtube_video_id');
+        const { data, error } = await supabase.from('courses').select('*');
         if (error) throw error;
         if (!data || data.length === 0) return container.innerHTML = '<p>No video courses available yet.</p>';
+        
         container.innerHTML = '';
         data.forEach(course => {
             if (!course.youtube_video_id) return;
+            
             const videoCard = document.createElement('div');
             videoCard.className = 'video-course-card';
-            videoCard.innerHTML = `<div class="video-embed-container"><iframe src="https://www.youtube.com/embed/${course.youtube_video_id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="video-course-content"><h4>${course.title}</h4><p>${course.description}</p></div>`;
+            
+            // Truncate description to 100 characters
+            const shortDescription = course.description && course.description.length > 100 
+                ? course.description.substring(0, 100) + '...' 
+                : course.description || 'No description available';
+            
+            videoCard.innerHTML = `
+                <div class="video-embed-container">
+                    <iframe src="https://www.youtube.com/embed/${course.youtube_video_id}" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="video-course-content">
+                    <div class="course-header">
+                        <h4>${course.title || 'Untitled Course'}</h4>
+                        ${course.category ? `<span class="course-category">${course.category}</span>` : ''}
+                    </div>
+                    <p class="course-description">${shortDescription}</p>
+                    <div class="course-details">
+                        ${course.price ? `<span class="course-price">₦${parseFloat(course.price).toLocaleString()}</span>` : ''}
+                        ${course.duration ? `<span class="course-duration">${course.duration}</span>` : ''}
+                    </div>
+                    <div class="course-actions">
+                        <button class="btn-read-more" onclick="viewCourseDetails(${course.id})">Read More</button>
+                        <button class="btn-enrol" onclick="enrolInCourse(${course.id})">Enrol Now</button>
+                    </div>
+                </div>
+            `;
             container.appendChild(videoCard);
         });
     } catch (error) {
+        console.error('Error fetching video courses:', error);
         container.innerHTML = '<p>Failed to load video courses.</p>';
     }
 }
@@ -747,3 +892,179 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error("Error during DOMContentLoaded initialization:", error);
     }
 });
+
+// Navigation functions for course actions
+function viewCourseDetails(courseId) {
+    // Store course ID in localStorage for the details page
+    localStorage.setItem('selectedCourseId', courseId);
+    
+    // Check if we're already in the pages directory
+    const currentPath = window.location.pathname;
+    const isInPagesDir = currentPath.includes('/pages/');
+    
+    if (isInPagesDir) {
+        // We're already in pages directory, use relative path
+        window.location.href = 'course-detail.html';
+    } else {
+        // We're in root directory, use pages/ path
+        window.location.href = 'pages/course-detail.html';
+    }
+}
+
+function enrolInCourse(courseId) {
+    // Store course ID in localStorage for the checkout page
+    localStorage.setItem('enrollCourseId', courseId);
+    
+    // Check if we're already in the pages directory
+    const currentPath = window.location.pathname;
+    const isInPagesDir = currentPath.includes('/pages/');
+    
+    if (isInPagesDir) {
+        // We're already in pages directory, use relative path
+        window.location.href = 'course-checkout.html';
+    } else {
+        // We're in root directory, use pages/ path
+        window.location.href = 'pages/course-checkout.html';
+    }
+}
+
+// Course Detail Page Functions
+function initializeCourseDetailPage() {
+    const courseId = localStorage.getItem('selectedCourseId');
+    if (!courseId) {
+        showNotFoundState();
+        return;
+    }
+    
+    loadCourseDetails(courseId);
+}
+
+async function loadCourseDetails(courseId) {
+    if (!supabase) {
+        showNotFoundState();
+        return;
+    }
+    
+    try {
+        const { data, error } = await supabase
+            .from('courses')
+            .select('*')
+            .eq('id', courseId)
+            .single();
+        
+        if (error || !data) {
+            showNotFoundState();
+            return;
+        }
+        
+        displayCourseDetails(data);
+        
+    } catch (error) {
+        console.error('Error loading course details:', error);
+        showNotFoundState();
+    }
+}
+
+function displayCourseDetails(course) {
+    // Hide loading state
+    document.getElementById('loading-state').style.display = 'none';
+    
+    // Show course content
+    const contentDiv = document.getElementById('course-detail-content');
+    contentDiv.style.display = 'block';
+    
+    // Update content
+    document.getElementById('course-breadcrumb-title').textContent = course.title;
+    document.getElementById('course-title').textContent = course.title;
+    document.getElementById('course-category').textContent = course.category || 'General';
+    document.getElementById('course-duration').textContent = course.duration || 'Self-paced';
+    document.getElementById('course-price').textContent = `₦${parseFloat(course.price || 0).toLocaleString()}`;
+    document.getElementById('course-description').textContent = course.description || 'No description available';
+    
+    // Load video if available
+    if (course.youtube_video_id) {
+        const videoContainer = document.getElementById('course-video-container');
+        videoContainer.innerHTML = `
+            <iframe 
+                src="https://www.youtube.com/embed/${course.youtube_video_id}" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        `;
+    }
+    
+    // Set up enrol button
+    const enrolBtn = document.getElementById('enrol-btn');
+    enrolBtn.onclick = () => {
+        localStorage.setItem('enrollCourseId', course.id);
+        window.location.href = 'course-checkout.html';
+    };
+}
+
+function showNotFoundState() {
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('not-found-state').style.display = 'block';
+}
+
+// Checkout Page Functions
+function initializeCheckoutPage() {
+    const courseId = localStorage.getItem('enrollCourseId');
+    if (!courseId) {
+        showCheckoutNotFoundState();
+        return;
+    }
+    
+    loadCheckoutCourse(courseId);
+}
+
+async function loadCheckoutCourse(courseId) {
+    if (!supabase) {
+        showCheckoutNotFoundState();
+        return;
+    }
+    
+    try {
+        const { data, error } = await supabase
+            .from('courses')
+            .select('*')
+            .eq('id', courseId)
+            .single();
+        
+        if (error || !data) {
+            showCheckoutNotFoundState();
+            return;
+        }
+        
+        displayCheckoutCourse(data);
+        
+    } catch (error) {
+        console.error('Error loading checkout course:', error);
+        showCheckoutNotFoundState();
+    }
+}
+
+function displayCheckoutCourse(course) {
+    // Hide loading state
+    document.getElementById('loading-state').style.display = 'none';
+    
+    // Show checkout content
+    const contentDiv = document.getElementById('checkout-content');
+    contentDiv.style.display = 'block';
+    
+    // Update content
+    document.getElementById('course-title').textContent = course.title;
+    document.getElementById('course-category').textContent = course.category || 'General';
+    document.getElementById('course-duration').textContent = course.duration || 'Self-paced';
+    document.getElementById('course-price').textContent = `₦${parseFloat(course.price || 0).toLocaleString()}`;
+    
+    // Truncate description for summary
+    const description = course.description || 'No description available';
+    const shortDescription = description.length > 150 ? description.substring(0, 150) + '...' : description;
+    document.getElementById('course-description').textContent = shortDescription;
+}
+
+function showCheckoutNotFoundState() {
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('not-found-state').style.display = 'block';
+}

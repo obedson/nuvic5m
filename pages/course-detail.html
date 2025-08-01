@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Details - NUVIC5M TECH SOLUTIONS LTD</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- Google Fonts for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header and Navbar Section -->
+    <header class="header">
+        <nav class="navbar">
+            <a href="../index.html" class="nav-logo">
+                <img src="../assets/images/logo.jpg" alt="NUVIC5M Logo">
+            </a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="../index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
+                <li class="nav-item"><a href="courses.html" class="nav-link">Courses</a></li>
+                <li class="nav-item"><a href="login.html" class="nav-link-button">Login</a></li>
+                <li class="nav-item"><a href="register.html" class="nav-link-button-primary">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Course Detail Section -->
+        <section class="course-detail-section">
+            <div class="container">
+                <div class="course-detail-container">
+                    <!-- Loading state -->
+                    <div id="loading-state" class="loading-state">
+                        <p>Loading course details...</p>
+                    </div>
+                    
+                    <!-- Course not found state -->
+                    <div id="not-found-state" class="not-found-state" style="display: none;">
+                        <h2>Course Not Found</h2>
+                        <p>The course you're looking for doesn't exist or has been removed.</p>
+                        <a href="courses.html" class="cta-button">Back to Courses</a>
+                    </div>
+                    
+                    <!-- Course detail content -->
+                    <div id="course-detail-content" class="course-detail-content" style="display: none;">
+                        <div class="course-detail-header">
+                            <div class="course-breadcrumb">
+                                <a href="../index.html">Home</a> > 
+                                <a href="courses.html">Courses</a> > 
+                                <span id="course-breadcrumb-title">Course Details</span>
+                            </div>
+                            <h1 id="course-title">Course Title</h1>
+                            <div class="course-meta">
+                                <span id="course-category" class="course-category-badge">Category</span>
+                                <span id="course-duration" class="course-duration-badge">Duration</span>
+                                <span id="course-price" class="course-price-badge">Price</span>
+                            </div>
+                        </div>
+                        
+                        <div class="course-detail-body">
+                            <div class="course-video-section">
+                                <div id="course-video-container" class="course-video-container">
+                                    <!-- Video will be loaded here -->
+                                </div>
+                            </div>
+                            
+                            <div class="course-info-section">
+                                <div class="course-description">
+                                    <h3>Course Description</h3>
+                                    <div id="course-description" class="course-description-content">
+                                        <!-- Description will be loaded here -->
+                                    </div>
+                                </div>
+                                
+                                <div class="course-actions">
+                                    <button id="enrol-btn" class="cta-button primary">Enrol Now</button>
+                                    <a href="courses.html" class="cta-button secondary">Back to Courses</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 NUVIC5M Tech Solutions Ltd. All rights reserved.</p>
+        <p class="slogan">"Learning and Service at its Best"</p>
+    </footer>
+
+    <!-- Supabase and main script -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../assets/js/script.js"></script>
+    <script>
+        // Initialize course detail page when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCourseDetailPage();
+        });
+    </script>
+
+</body>
+</html>

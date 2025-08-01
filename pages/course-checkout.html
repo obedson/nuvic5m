@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Checkout - NUVIC5M TECH SOLUTIONS LTD</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- Google Fonts for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header and Navbar Section -->
+    <header class="header">
+        <nav class="navbar">
+            <a href="../index.html" class="nav-logo">
+                <img src="../assets/images/logo.jpg" alt="NUVIC5M Logo">
+            </a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="../index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
+                <li class="nav-item"><a href="courses.html" class="nav-link">Courses</a></li>
+                <li class="nav-item"><a href="login.html" class="nav-link-button">Login</a></li>
+                <li class="nav-item"><a href="register.html" class="nav-link-button-primary">Register</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Checkout Section -->
+        <section class="checkout-section">
+            <div class="container">
+                <div class="checkout-container">
+                    <!-- Loading state -->
+                    <div id="loading-state" class="loading-state">
+                        <p>Loading course information...</p>
+                    </div>
+                    
+                    <!-- Course not found state -->
+                    <div id="not-found-state" class="not-found-state" style="display: none;">
+                        <h2>Course Not Found</h2>
+                        <p>The course you're trying to enrol in doesn't exist or has been removed.</p>
+                        <a href="courses.html" class="cta-button">Back to Courses</a>
+                    </div>
+                    
+                    <!-- Checkout content -->
+                    <div id="checkout-content" class="checkout-content" style="display: none;">
+                        <div class="checkout-header">
+                            <div class="checkout-breadcrumb">
+                                <a href="../index.html">Home</a> > 
+                                <a href="courses.html">Courses</a> > 
+                                <span>Checkout</span>
+                            </div>
+                            <h1>Course Enrollment</h1>
+                        </div>
+                        
+                        <div class="checkout-body">
+                            <!-- Course Summary -->
+                            <div class="course-summary">
+                                <h2>Course Summary</h2>
+                                <div class="course-summary-card">
+                                    <h3 id="course-title">Course Title</h3>
+                                    <div class="course-meta">
+                                        <span id="course-category" class="course-category-badge">Category</span>
+                                        <span id="course-duration" class="course-duration-badge">Duration</span>
+                                    </div>
+                                    <p id="course-description" class="course-summary-description">Course description...</p>
+                                    <div class="course-price-total">
+                                        <strong>Total: <span id="course-price">₦0</span></strong>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Payment Instructions -->
+                            <div class="payment-instructions">
+                                <h2>Payment Instructions</h2>
+                                <div class="payment-card">
+                                    <div class="payment-method">
+                                        <h3>Bank Transfer</h3>
+                                        <div class="bank-details">
+                                            <div class="bank-info">
+                                                <strong>Bank:</strong> Opay
+                                            </div>
+                                            <div class="account-info">
+                                                <strong>Account Number:</strong> 
+                                                <span class="account-number">9063085415</span>
+                                                <button class="copy-btn" onclick="copyAccountNumber()">Copy</button>
+                                            </div>
+                                            <div class="account-name">
+                                                <strong>Account Name:</strong> NUVIC5M Tech Solutions Ltd
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="payment-steps">
+                                        <h4>How to Complete Payment:</h4>
+                                        <ol>
+                                            <li>Transfer the exact amount to the account details above</li>
+                                            <li>Take a screenshot or save your payment receipt</li>
+                                            <li>Click the "Upload Payment Proof" button below</li>
+                                            <li>Send your payment proof via WhatsApp</li>
+                                            <li>Wait for confirmation and course access details</li>
+                                        </ol>
+                                    </div>
+                                    
+                                    <div class="payment-actions">
+                                        <a href="https://wa.me/2349063085415?text=Hi%2C%20I%20have%20made%20payment%20for%20the%20course%20and%20would%20like%20to%20upload%20my%20payment%20proof." 
+                                           target="_blank" 
+                                           class="cta-button whatsapp-btn">
+                                            📱 Upload Payment Proof via WhatsApp
+                                        </a>
+                                        <a href="courses.html" class="cta-button secondary">Back to Courses</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Important Notes -->
+                            <div class="payment-notes">
+                                <h3>Important Notes:</h3>
+                                <ul>
+                                    <li>Payment confirmation usually takes 1-2 hours during business hours</li>
+                                    <li>Course access will be granted after payment verification</li>
+                                    <li>Keep your payment receipt for future reference</li>
+                                    <li>For any issues, contact us via WhatsApp: +234 906 308 5415</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 NUVIC5M Tech Solutions Ltd. All rights reserved.</p>
+        <p class="slogan">"Learning and Service at its Best"</p>
+    </footer>
+
+    <!-- Supabase and main script -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../assets/js/script.js"></script>
+    <script>
+        // Initialize checkout page when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCheckoutPage();
+        });
+        
+        // Function to copy account number
+        function copyAccountNumber() {
+            const accountNumber = '9063085415';
+            navigator.clipboard.writeText(accountNumber).then(function() {
+                alert('Account number copied to clipboard!');
+            }, function(err) {
+                console.error('Could not copy text: ', err);
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = accountNumber;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('Account number copied to clipboard!');
+            });
+        }
+    </script>
+
+</body>
+</html>

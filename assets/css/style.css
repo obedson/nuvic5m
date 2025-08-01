@@ -29,6 +29,7 @@ TABLE OF CONTENTS
 :root {
     --primary-color: #4a90e2; /* A modern, friendly blue */
     --secondary-color: #50e3c2; /* A vibrant accent color */
+    --accent-color: #f39c12; /* Orange accent color for buttons and highlights */
     --dark-color: #1a1a1a;
     --light-color: #fdfdfd;
     --text-color: #333;
@@ -2047,13 +2048,125 @@ h1, h2, h3 {
     color: var(--text-light);
 }
 
-/* 5. Main Content Wrapper
+/* 5. Main Content Layout (No Sidebar)
 ---------------------------------------- */
-.main-content-wrapper {
+.main-content {
+    padding: 40px 0;
+}
+
+.training-section {
+    margin-bottom: 60px;
+}
+
+.training-section h2 {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin-bottom: 40px;
+    font-weight: 700;
+}
+
+/* Info Cards Wrapper */
+.info-cards-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.info-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid var(--accent-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.info-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.info-card p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.info-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.info-card ul li {
+    margin-bottom: 10px;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* Contact List Styling */
+.contact-list li {
     display: flex;
-    flex-direction: column;
-    padding-top: 40px;
-    padding-bottom: 40px;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 8px 0;
+}
+
+.contact-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.contact-list a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-list a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+/* Courses Section */
+.courses-section {
+    margin-top: 60px;
+}
+
+.courses-section h2 {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin-bottom: 40px;
+    font-weight: 700;
+}
+
+/* Tablet responsive styles for new layout */
+@media (min-width: 768px) {
+    .info-cards-wrapper {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+    }
+    
+    .training-section h2 {
+        font-size: 2.5rem;
+    }
+    
+    .courses-section h2 {
+        font-size: 2.2rem;
+    }
 }
 
 /* 6. Sidebar
@@ -2315,6 +2428,24 @@ h1, h2, h3 {
     .hero-caption .highlight {
         font-size: 1.8rem;
     }
+    
+    /* New layout responsive styles */
+    .info-cards-wrapper {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .info-card {
+        padding: 20px;
+    }
+    
+    .training-section h2 {
+        font-size: 1.8rem;
+    }
+    
+    .courses-section h2 {
+        font-size: 1.8rem;
+    }
 }
 
 /* For Laptops and Desktops */
@@ -2323,20 +2454,24 @@ h1, h2, h3 {
         height: 60vh; /* Set slider height to 60% of viewport height */
     }
 
-    .main-content-wrapper {
-        flex-direction: row;
-        gap: 40px;
-        align-items: flex-start;
+    .main-content {
+        padding: 60px 0;
     }
-
-    .sidebar {
-        width: 350px;
-        flex-shrink: 0;
-        margin-bottom: 0;
+    
+    .training-section {
+        margin-bottom: 80px;
     }
-
+    
+    .training-section h2 {
+        font-size: 2.5rem;
+    }
+    
     .courses-section {
-        flex-grow: 1;
+        margin-top: 80px;
+    }
+    
+    .courses-section h2 {
+        font-size: 2.2rem;
     }
 
     .courses-grid {
@@ -2348,4 +2483,498 @@ h1, h2, h3 {
     .courses-grid {
         grid-template-columns: repeat(3, 1fr);
     }
+}
+
+/* Enhanced Course Card Styles */
+.course-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.course-header h4 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    flex-grow: 1;
+}
+
+.course-category {
+    background: var(--accent-color);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-left: 10px;
+    white-space: nowrap;
+}
+
+.course-description {
+    color: var(--text-color);
+    line-height: 1.6;
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+.course-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+}
+
+.course-price {
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.course-duration {
+    color: var(--text-color);
+    font-size: 0.9rem;
+    background: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.course-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.btn-read-more, .btn-enrol {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-read-more {
+    background: #f8f9fa;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-read-more:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-enrol {
+    background: var(--accent-color, #f39c12) !important; /* Orange with fallback */
+    color: white !important;
+    border: none !important;
+}
+
+.btn-enrol:hover {
+    background: #e67e22 !important; /* Darker orange on hover */
+    transform: translateY(-2px);
+}
+
+/* Course Detail Page Styles */
+.course-detail-section {
+    padding: 40px 0;
+    background: #f8f9fa;
+    min-height: 80vh;
+}
+
+.course-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.course-detail-header {
+    padding: 30px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: white;
+}
+
+.course-breadcrumb {
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.course-breadcrumb a {
+    color: white;
+    text-decoration: none;
+}
+
+.course-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.course-detail-header h1 {
+    margin: 0 0 20px 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.course-meta {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.course-category-badge, .course-duration-badge, .course-price-badge {
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.course-category-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.course-duration-badge {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+}
+
+.course-price-badge {
+    background: white;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.course-detail-body {
+    padding: 40px 30px;
+}
+
+.course-video-section {
+    margin-bottom: 40px;
+}
+
+.course-video-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.course-video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.course-info-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.course-description-content {
+    line-height: 1.8;
+    color: var(--text-color);
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+}
+
+.course-actions {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Checkout Page Styles */
+.checkout-section {
+    padding: 40px 0;
+    background: #f8f9fa;
+    min-height: 80vh;
+}
+
+.checkout-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.checkout-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.checkout-breadcrumb {
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.checkout-breadcrumb a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.checkout-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.checkout-header h1 {
+    color: var(--primary-color);
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+.course-summary, .payment-instructions {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.course-summary h2, .payment-instructions h2 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.course-summary-card {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.course-summary-card h3 {
+    margin: 0 0 15px 0;
+    color: var(--primary-color);
+}
+
+.course-summary-description {
+    color: var(--text-color);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.course-price-total {
+    text-align: right;
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    border-top: 2px solid #e9ecef;
+    padding-top: 15px;
+}
+
+.payment-card {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 25px;
+}
+
+.payment-method h3 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.bank-details {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.bank-info, .account-info, .account-name {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.account-number {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-right: 10px;
+}
+
+.copy-btn {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.copy-btn:hover {
+    background: #e67e22;
+}
+
+.payment-steps h4 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.payment-steps ol {
+    line-height: 1.8;
+    color: var(--text-color);
+}
+
+.payment-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.whatsapp-btn {
+    background: #25D366;
+    color: white;
+    flex: 1;
+    min-width: 250px;
+}
+
+.whatsapp-btn:hover {
+    background: #128C7E;
+}
+
+.payment-notes {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.payment-notes h3 {
+    color: #856404;
+    margin-bottom: 15px;
+}
+
+.payment-notes ul {
+    color: #856404;
+    line-height: 1.6;
+}
+
+/* Loading and Not Found States */
+.loading-state, .not-found-state {
+    text-align: center;
+    padding: 60px 30px;
+}
+
+.loading-state p {
+    font-size: 1.2rem;
+    color: var(--text-color);
+}
+
+.not-found-state h2 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.not-found-state p {
+    color: var(--text-color);
+    margin-bottom: 25px;
+}
+
+/* Responsive Design for New Pages */
+@media (max-width: 768px) {
+    .course-detail-header {
+        padding: 20px;
+    }
+    
+    .course-detail-header h1 {
+        font-size: 2rem;
+    }
+    
+    .course-detail-body {
+        padding: 20px;
+    }
+    
+    .course-meta {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .course-actions {
+        flex-direction: column;
+    }
+    
+    .checkout-container {
+        padding: 0 15px;
+    }
+    
+    .course-summary, .payment-instructions {
+        padding: 20px;
+    }
+    
+    .payment-actions {
+        flex-direction: column;
+    }
+    
+    .whatsapp-btn {
+        min-width: auto;
+    }
+}
+
+/* Admin Course Card Enhancements */
+.course-meta-admin {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.admin-category, .admin-price, .admin-duration {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.admin-category {
+    background: var(--accent-color);
+    color: white;
+}
+
+.admin-price {
+    background: var(--primary-color);
+    color: white;
+}
+
+.admin-duration {
+    background: #6c757d;
+    color: white;
+}
+
+.admin-description {
+    color: var(--text-color);
+    line-height: 1.5;
+    margin-bottom: 10px;
 }

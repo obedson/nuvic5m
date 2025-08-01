@@ -5,6 +5,10 @@
 *.txt
 *.md
 *.docx
+
+# Exception: Allow README files
+!README.md
+!readme.md
 gemini_debugging.txt
 nuvic_memory_31_7_25.txt
 extract_docx.py
