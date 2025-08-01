@@ -1,0 +1,43 @@
+# GitHub Pages Configuration for NUVIC5M Tech Solutions
+title: "NUVIC5M Tech Solutions Ltd"
+description: "Learning and Service at its Best - Digital Skills Training"
+url: "https://obedson.github.io"
+baseurl: "/nuvic5m"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+# Exclude files from processing
+exclude:
+  - README.md
+  - compress_images_windows.py
+  - compress_setup.bat
+  - compress_images.ps1
+  - IMAGE_OPTIMIZATION.md
+  - docs/
+  - "*.txt"
+  - node_modules/
+  - vendor/
+
+# Include files that start with underscore
+include:
+  - _redirects
+
+# Plugin settings
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+
+# SEO settings
+lang: en
+author: "NUVIC5M Tech Solutions Ltd"
+twitter:
+  username: nuvic5m
+social:
+  name: NUVIC5M Tech Solutions Ltd
+  links:
+    - https://twitter.com/nuvic5m
+    - https://instagram.com/nuvic5m
+    - https://facebook.com/nuvic5m
