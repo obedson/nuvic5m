@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider Test</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .test-slide {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <h1>Slider Functionality Test</h1>
+    <p>This page tests the slider with colored backgrounds instead of images.</p>
+    
+    <section id="hero" class="hero-section">
+        <div class="hero-slider">
+            <div class="slides">
+                <div class="slide active">
+                    <div class="test-slide" style="background: linear-gradient(45deg, #ff6b6b, #ee5a24);">Slide 1</div>
+                </div>
+                <div class="slide">
+                    <div class="test-slide" style="background: linear-gradient(45deg, #4834d4, #686de0);">Slide 2</div>
+                </div>
+                <div class="slide">
+                    <div class="test-slide" style="background: linear-gradient(45deg, #00d2d3, #01a3a4);">Slide 3</div>
+                </div>
+                <div class="slide">
+                    <div class="test-slide" style="background: linear-gradient(45deg, #ff9ff3, #f368e0);">Slide 4</div>
+                </div>
+                <div class="slide">
+                    <div class="test-slide" style="background: linear-gradient(45deg, #54a0ff, #2e86de);">Slide 5</div>
+                </div>
+            </div>
+            <button class="slider-nav prev" aria-label="Previous slide">&lt;</button>
+            <button class="slider-nav next" aria-label="Next slide">&gt;</button>
+            <div class="slider-indicators">
+                <button class="indicator active" data-slide="0" aria-label="Go to slide 1"></button>
+                <button class="indicator" data-slide="1" aria-label="Go to slide 2"></button>
+                <button class="indicator" data-slide="2" aria-label="Go to slide 3"></button>
+                <button class="indicator" data-slide="3" aria-label="Go to slide 4"></button>
+                <button class="indicator" data-slide="4" aria-label="Go to slide 5"></button>
+            </div>
+        </div>
+        <div class="hero-content">
+            <h1 class="hero-title">Slider Test</h1>
+            <p>Testing all slider functionality:</p>
+            <ul style="text-align: left; display: inline-block;">
+                <li>✅ Auto-play (5 seconds)</li>
+                <li>✅ Navigation buttons (< >)</li>
+                <li>✅ Slide indicators (dots)</li>
+                <li>✅ Keyboard controls (arrow keys)</li>
+                <li>✅ Touch/swipe support</li>
+                <li>✅ Hover to pause</li>
+            </ul>
+        </div>
+    </section>
+
+    <div style="margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+        <h2>How to Test:</h2>
+        <ol>
+            <li><strong>Auto-play:</strong> Wait 5 seconds to see slides change automatically</li>
+            <li><strong>Navigation:</strong> Click the < and > buttons</li>
+            <li><strong>Indicators:</strong> Click the dots at the bottom</li>
+            <li><strong>Keyboard:</strong> Use left/right arrow keys</li>
+            <li><strong>Touch:</strong> Swipe left/right on mobile</li>
+            <li><strong>Hover:</strong> Hover over slider to pause auto-play</li>
+        </ol>
+        
+        <h3>Console Debugging:</h3>
+        <p>Open browser developer tools (F12) and check the Console tab for detailed logging.</p>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

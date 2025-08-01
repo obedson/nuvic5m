@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - NUVIC5M TECH SOLUTIONS LTD</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="../index.html" class="nav-logo">
+                <img src="../assets/images/logo.jpg" alt="NUVIC5M Logo">
+            </a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="../index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
+                <li class="nav-item"><a href="courses.html" class="nav-link">Courses</a></li>
+                <li class="nav-item"><a href="admin.html" class="nav-link active">Admin</a></li>
+                <li class="nav-item">
+                    <button id="logout-btn" class="nav-link-button logout-btn" style="display: none;">Logout</button>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Admin Login Section (shown when not logged in) -->
+        <section id="admin-login-section" class="auth-section" style="display: none;">
+            <div class="container">
+                <div class="auth-form-container">
+                    <h2>Admin Login</h2>
+                    <p>Please login with your admin credentials to access the admin panel.</p>
+                    
+                    <form id="admin-login-form" class="auth-form">
+                        <div class="form-group">
+                            <label for="admin-email">Email:</label>
+                            <input type="email" id="admin-email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="admin-password">Password:</label>
+                            <input type="password" id="admin-password" name="password" required>
+                        </div>
+                        <button type="submit" class="cta-button">Login as Admin</button>
+                        <div id="admin-login-message" class="form-message"></div>
+                    </form>
+                    
+                    <div class="auth-links">
+                        <p>Not an admin? <a href="login.html">Regular Login</a></p>
+                        <p>Forgot password? <a href="forgot-password.html">Reset Password</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Panel Section (shown when logged in as admin) -->
+        <section id="admin-panel-section" style="display: none;">
+            <div class="container" style="padding-top: 40px; padding-bottom: 40px;">
+                <!-- Admin Welcome -->
+                <div class="admin-welcome">
+                    <h1>Admin Panel</h1>
+                    <p>Welcome, <span id="admin-user-email">Admin</span>! You can manage courses and content from here.</p>
+                    <div class="admin-actions">
+                        <button id="logout-btn-main" class="cta-button secondary">Logout</button>
+                    </div>
+                </div>
+
+                <!-- Add Course Form -->
+                <section id="admin-form-section">
+                    <h2>Add New Video Course</h2>
+                    <form id="add-course-form" class="admin-form">
+                        <div class="form-group">
+                            <label for="course-title">Course Title:</label>
+                            <input type="text" id="course-title" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="course-description">Course Description:</label>
+                            <textarea id="course-description" name="description" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="youtube-url">YouTube URL:</label>
+                            <input type="url" id="youtube-url" name="youtube_url" placeholder="https://www.youtube.com/watch?v=..." required>
+                        </div>
+                        <button type="submit" class="cta-button">Add Course</button>
+                        <div id="form-message" class="form-message"></div>
+                    </form>
+                </section>
+
+                <!-- Course Management Section -->
+                <section id="course-management-section">
+                    <h2>Manage Existing Courses</h2>
+                    <div id="admin-courses-container" class="admin-courses-grid">
+                        <div class="loader"></div>
+                        <!-- Courses will be loaded here -->
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <!-- Access Denied Section -->
+        <section id="access-denied-section" style="display: none;">
+            <div class="container">
+                <div class="access-denied-container">
+                    <h2>🚫 Access Denied</h2>
+                    <p>You don't have admin privileges to access this page.</p>
+                    <div class="access-denied-actions">
+                        <a href="login.html" class="cta-button">Login</a>
+                        <a href="index.html" class="cta-button secondary">Go Home</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 NUVIC5M TECH SOLUTIONS LTD. All Rights Reserved.</p>
+        <p class="slogan">"Learning and Service at its Best"</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../assets/js/script.js"></script>
+</body>
+</html>
